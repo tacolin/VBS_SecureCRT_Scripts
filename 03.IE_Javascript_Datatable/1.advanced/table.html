@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Run Script Table</title>
+    <script type="text/javascript" src="table_media/js/jquery.js"></script>
+    <script type="text/javascript" src="table_media/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="table_media/css/jquery.dataTables.css">
+    <script type="text/javascript">
+
+    var g_table = null;
+
+    $(document).ready(function() {
+    } );
+
+    var showArray = function (vbArray) {
+        var jsArray = vbArray.toArray();
+        for (var i = 0; i < jsArray.length; i++) {
+            alert(jsArray[i]);
+        };
+    };
+
+    var setTitles = function (vbTitles) {
+        var jsTitles = vbTitles.toArray();
+
+        $("thead>tr>th").remove();
+        $("tfoot>tr>th").remove();
+
+        for (var i = 0; i < jsTitles.length; i++) {
+            var th = "<th>" + String(jsTitles[i]) + "</th>";
+            $("thead>tr").append(th);
+            $("tfoot>tr").append(th);
+        };
+    };
+
+    var initialize = function () {
+        $('#tbl').dataTable( {
+            "paging": false,
+            "initComplete": function () {
+                var api = this.api();
+                api.$('td').click( function () {
+                    api.search( this.innerHTML ).draw();
+                } );
+            }
+        } );
+
+        g_table = $('#tbl').DataTable();
+    };
+
+    var scrollToRow = function (rowIndex) {
+        if (rowIndex > $("tbody>tr").length) {
+            console.log("do nothing");
+            return;
+        }
+
+        var row = $("tbody>tr")[rowIndex];
+        var value = $(row).position().top;
+
+        var currTop = $(document).scrollTop();
+        var height = $(window).height() - 65;
+        var currBottom = currTop + height;
+
+        if (value < (currTop)) {
+            $("html, body").animate({
+                scrollTop : value
+            }, 500);
+        } else if ( (value) > currBottom) {
+            $("html, body").animate({
+                scrollTop : value - height
+            }, 500);
+        }
+    };
+
+    var addRow = function (vbRowDataArray) {
+        var jsRowDataArray = vbRowDataArray.toArray();
+        var ret = g_table.row.add(jsRowDataArray).draw();
+        scrollToRow(ret.index());
+        return ret.index();
+    };
+
+    var updateCell = function (rowIndex, columnIndex, cellData) {
+        scrollToRow(rowIndex);
+        g_table.cell(rowIndex, columnIndex).data(cellData)
+    };
+
+    var updateRow = function (rowIndex, vbRowDataArray) {
+        var jsRowDataArray = vbRowDataArray.toArray();
+        scrollToRow(rowIndex);
+        g_table.row(rowIndex).data(jsRowDataArray);
+    };
+
+    </script>
+</head>
+<body>
+<table width="100%" class="display" id="tbl" cellspacing="0">
+    <thead>
+        <tr>
+        </tr>
+    </thead>
+
+    <tfoot>
+        <tr>
+        </tr>
+    </tfoot>
+
+    <tbody>
+
+    </tbody>
+</table>
+</body>
+</html>

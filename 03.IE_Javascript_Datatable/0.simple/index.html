@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Run Script Table</title>
+    <script type="text/javascript" src="media/js/jquery.js"></script>
+    <script type="text/javascript" src="media/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="media/css/jquery.dataTables.css">
+    <script type="text/javascript">
+
+    // const ST_NULL = 0;
+    // const ST_SCRIPT_SELECT = 1;
+    // const ST_SCRIPT_RUNNING = 2;
+
+    // const EV_NULL = 0;
+    // const EV_SCRIPT_ADD = 1;
+    // const EV_SCRIPT_DEL = 2;
+    // const EV_SCRIPT_RUN = 3;
+
+    const IMG_WAIT = "<img src='media/images/icon_wait.png' height=24/>";
+    const IMG_OK = "<img src='media/images/icon_ok.png' height=24/>";
+    const IMG_FAIL = "<img src='media/images/icon_fail.png' height=24/>";
+    const IMG_NA = "<img src='media/images/icon_na.png' height=24/>";
+    const IMG_REMOVE = "<img src='media/images/icon_remove.png' height=24/>";
+    const IMG_PROCESS = "<img src='media/images/processing.gif' height=24/>";
+    const IMG_PROCESSED = "<img src='media/images/processed.gif' height=24/>";
+
+    const BTN_DEL = "<input type='image' src='media/images/icon_remove.png' height=28 onclick='taco(this);' />"
+
+    var g_table = null;
+    // var g_state = ST_NULL;
+    // var g_event = EV_NULL;
+
+    $(document).ready(function() {
+        $('#tbl').dataTable( {
+            "paging": false,
+            "initComplete": function () {
+                var api = this.api();
+                api.$('td').click( function () {
+                    api.search( this.innerHTML ).draw();
+                } );
+            }
+        } );
+
+        g_table = $('#tbl').DataTable();
+
+    } );
+
+    var addRow = function (scriptName) {
+        var ret = g_table.row.add([scriptName, IMG_WAIT, "", "", "", BTN_DEL]).draw();
+        $(document).scrollTop($(document).height());
+        return ret.index();
+    };
+
+    var updateRow = function (rowIndex, status, ringRet, fpingRet, recoverTime) {
+        g_table.cell(rowIndex, 1).data(status);
+        g_table.cell(rowIndex, 2).data(ringRet);
+        g_table.cell(rowIndex, 3).data(fpingRet);
+        g_table.cell(rowIndex, 4).data(recoverTime);
+    };
+
+    </script>
+</head>
+<body>
+<table width="100%" class="display" id="tbl" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Script 名稱</th>
+            <th>執行狀態</th>
+            <th>Ring 結果</th>
+            <th>FastPing 結果</th>
+            <th>回復時間 (ms)</th>
+        </tr>
+    </thead>
+
+    <tfoot>
+        <tr>
+            <th>Script 名稱</th>
+            <th>執行狀態</th>
+            <th>Ring 結果</th>
+            <th>FastPing 結果</th>
+            <th>回復時間 (ms)</th>
+        </tr>
+    </tfoot>
+
+    <tbody>
+
+<!--         <tr>
+            <td>case1.vbs</td>
+            <td>OK</td>
+            <td>OK</td>
+            <td>9.9ms</td>
+        </tr>
+        <tr>
+            <td>case2.vbs</td>
+            <td>OK</td>
+            <td>FAIL</td>
+            <td>20ms</td>
+        </tr> -->
+
+    </tbody>
+</table>
+</body>
+</html>

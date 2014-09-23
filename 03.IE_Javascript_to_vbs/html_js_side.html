@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>secureCRT HTML Interaction</title>
+    <script type="text/javascript">
+
+        var vbsEvent = 0;
+        var ending = 0;
+        var params;
+
+        function button1Click () {
+            vbsEvent = 1;
+            params = [1,2,3,4];
+        }
+
+        function button2Click () {
+            vbsEvent = 2;
+            params = "hello fucker";
+        }
+
+        function button3Click () {
+            ending = -1;
+        }
+    </script>
+</hecd>
+<body>
+    <div>
+        <button onclick="button1Click();">Button 1</button>
+        </script>
+    </div>
+
+    <div>
+        <button onclick="button2Click();">Button 2</button>
+        </script>
+    </div>
+
+    <div>
+        <button onclick="button3Click();">Button 3</button>
+    </div>
+
+</body>
+</html>

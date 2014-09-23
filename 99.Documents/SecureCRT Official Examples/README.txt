@@ -1,0 +1,1 @@
+copy from secure crt example scrips directory
